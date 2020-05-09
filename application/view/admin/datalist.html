@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="container">
+            <a class="btn btn-default btn-lg" href="/BiYe2/public/index.php/admin/" role="button">首页</a>
+            <a class="btn btn-default btn-lg" href="/BiYe2/public/index.php/admin/problemlist/" role="button">题目列表</a>
+            <a class="btn btn-default btn-lg" href="/BiYe2/public/index.php/admin/add/" role="button">增加题目</a>
+            <a class="btn btn-default btn-lg" href="/BiYe2/public/index.php/admin/datalist/" role="button">统计数据</a>
+        </div>
+        <div class="container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>数据名</th>
+                        <th>数据量</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>总人数</th>
+                        <th>{$data_list.allman}</th>
+                    </tr>
+                    <tr>
+                        <th>总考试次数</th>
+                        <th>{$data_list.allexam}</th>
+                    </tr>
+                    <tr>
+                        <th>考了1次的人数</th>
+                        <th>{$data_list.1man}</th>
+                    </tr>
+                    <tr>
+                        <th>考了2次的人数</th>
+                        <th>{$data_list.2man}</th>
+                    </tr>
+                    <tr>
+                        <th>得100分的人次</th>
+                        <th>{$data_list.score100}</th>
+                    </tr>
+                    <tr>
+                        <th>得90分的人次</th>
+                        <th>{$data_list.score90}</th>
+                    </tr>
+                    <tr>
+                        <th>得80分的人次</th>
+                        <th>{$data_list.score80}</th>
+                    </tr>
+                    <tr>
+                        <th>得70分的人次</th>
+                        <th>{$data_list.score70}</th>
+                    </tr>
+                    <tr>
+                        <th>得60分的人次</th>
+                        <th>{$data_list.score60}</th>
+                    </tr>
+                    <tr>
+                        <th>得50分的人次</th>
+                        <th>{$data_list.score50}</th>
+                    </tr>
+                    <tr>
+                        <th>得40分的人次</th>
+                        <th>{$data_list.score40}</th>
+                    </tr>
+                    <tr>
+                        <th>得30分的人次</th>
+                        <th>{$data_list.score30}</th>
+                    </tr>
+                    <tr>
+                        <th>得20分的人次</th>
+                        <th>{$data_list.score20}</th>
+                    </tr>
+                    <tr>
+                        <th>得10分的人次</th>
+                        <th>{$data_list.score10}</th>
+                    </tr>
+                    <tr>
+                        <th>得0分的人次</th>
+                        <th>{$data_list.score0}</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
