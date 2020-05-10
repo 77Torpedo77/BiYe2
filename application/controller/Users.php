@@ -76,25 +76,26 @@ class Users extends Controller
 		{
 			$getuserinfo_return['try']=-1;
 			return json($getuserinfo_return);
-		}
+		} 
 		$problem_array=explode(",",$oldrecord->problemid); 
 		//统计分数并更新展示次数与正确次数
-		for($i=0;$i<10;++$i)
+		for($i=0;$i<count($correct_array);++$i)
 		{
 			$aproblem = Problems::where('id',$problem_array[$i])->find();
 			$aproblem->show_time = $aproblem->show_time + 1;
-			for($j=0;$j<count($correct_array);++$j)
-			{
-				if($i==$correct_array[$j])
+			//for($j=0;$j<count($correct_array);++$j)
+			//{
+				if($aproblem->answer==$correct_array[$i])
 				{
 					$aproblem->pass_time = $aproblem->pass_time + 1;
 					$scoresum += 10;
 				}
-			}
+			//}
 			$aproblem->save();
 		}
 		$oldrecord->score=$scoresum;
 		$oldrecord->save();
+		$getuserinfo_return['score']=$scoresum;
 		return json($getuserinfo_return);
 	}
 	//获取问题
