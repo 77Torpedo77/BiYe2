@@ -312,6 +312,20 @@ class Users extends Controller
 		return redirect($url);
 	}
 
+
+	function getrank()
+	{
+		$records = $this->RecordModel->field('wxid,score,max(score)')->group('wxid')->limit(50)->orderRaw('score desc')->select();
+		for ($i=0; $i < count($records); $i++) 
+		{ 
+			$return_rank[$i]['wxid']=$records[$i]->wxid;
+			$return_rank[$i]['score']=$records[$i]->score;
+			//var_dump($records[$i]->score.'----'.$records[$i]->wxid);
+		}
+		return json($return_rank);
+		
+	}
+
     function index()
     {
         return 1;
