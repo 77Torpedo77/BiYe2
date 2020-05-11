@@ -37,6 +37,7 @@ class Users extends Controller
 		$this->ProblemsModel = new Problems();
 		$this->RecordModel = new Record();
 		$this->UserModel = new User();
+		$this->ImageModel = new Image();
     }
 	//提交答题情况
 	function submit()
@@ -292,43 +293,182 @@ class Users extends Controller
 	}
 	public function getopenid()
 	{
-		$appid  = 'wxc6e2459bdea9cd72';
-		$secret = '2d46bb85fee34fba3401796b5a224283';
-		$code   = $_GET['code'];
-		$weixin1 =  file_get_contents('https://api.weixin.qq.com/sns/oauth2/access_token?appid='.$appid.'&secret='.$secret.'&code='.$code.'&grant_type=authorization_code');//通过code换取网页授权access_token
-		$jsondecode = json_decode($weixin1); //对JSON格式的字符串进行编码
-		$array = get_object_vars($jsondecode);//转换成数组
-		$openid = $array['openid'];//输出openid
-		$access_token = $array['access_token'];
-		$weixin2 =  file_get_contents('https://api.weixin.qq.com/sns/userinfo?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN');//通过access_token和openid换取用户信息
-		return ($weixin2);
+		if (!isset($_GET['code'])) 
+		{
+			$url = $this->getcode();
+            Header("Location: $url");
+            exit();
+        }
+        else
+        {
+			$code   = $_GET['code'];
+			$appid  = 'wxc6e2459bdea9cd72';
+			$secret = '2d46bb85fee34fba3401796b5a224283';
+			$code   = $_GET['code'];
+			$weixin1 =  file_get_contents('https://api.weixin.qq.com/sns/oauth2/access_token?appid='.$appid.'&secret='.$secret.'&code='.$code.'&grant_type=authorization_code');//通过code换取网页授权access_token
+			$jsondecode = json_decode($weixin1); //对JSON格式的字符串进行编码
+			$array = get_object_vars($jsondecode);//转换成数组
+			if (!isset($array['openid'])) {
+				$url = $this->getcode();
+            	Header("Location: $url");
+            	exit();
+			}
+			$openid = $array['openid'];//输出openid
+			$access_token = $array['access_token'];
+			$weixin2 =  file_get_contents('https://api.weixin.qq.com/sns/userinfo?access_token='.$access_token.'&openid='.$openid.'&lang=zh_CN');//通过access_token和openid换取用户信息
+			$return_data['nickname']=get_object_vars(json_decode($weixin2))['nickname'];
+			$return_data['openid']=get_object_vars(json_decode($weixin2))['openid'];
+			$return_data['iconurl']=get_object_vars(json_decode($weixin2))['headimgurl'];
+			return json($return_data);
+		}
+		return "error";
+
+
 		
 	}
 	public function getcode()
 	{
 		$appid  = 'wxc6e2459bdea9cd72';
-		$redirect_uri = 'http://9daejz.natappfree.cc/BiYe2/public/users/getopenid';//获取code后跳转getopenid方法取得openid
+		$redirect_uri = 'http://kvczys.natappfree.cc/BiYe2/public/users/getopenid';//获取code后跳转getopenid方法取得openid
 		$url    = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$appid.'&redirect_uri='.$redirect_uri.'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
-		return redirect($url);
+		return $url;
+		// $appid  = 'wxc6e2459bdea9cd72';
+		// $redirect_uri = 'http://kvczys.natappfree.cc/BiYe2/public/users/getcode';//获取code后跳转getopenid方法取得openid
+		// $url    = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$appid.'&redirect_uri='.$redirect_uri.'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+ 
+
+ 	// 	$ci = curl_init();
+  //       /* Curl settings */
+  //       curl_setopt($ci, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+  //       curl_setopt($ci, CURLOPT_CONNECTTIMEOUT, 30);
+  //       curl_setopt($ci, CURLOPT_TIMEOUT, 30);
+  //       curl_setopt($ci, CURLOPT_RETURNTRANSFER, true);
+
+  //       curl_setopt($ci, CURLOPT_URL, $url);
+  //       $response = curl_exec($ci);
+
+  //       curl_close($ci);
+  //       $info = json_decode($response, TRUE);
+  //       return $info;
 	}
 
 
 	function getrank()
 	{
-		$records = $this->RecordModel->field('wxid,score,max(score)')->group('wxid')->limit(50)->orderRaw('score desc')->select();
-		for ($i=0; $i < count($records); $i++) 
+		$ranks = $this->ImageModel->field('url,nickname,wxid,score')->group('wxid')->limit(50)->orderRaw('score desc')->select();
+		//$ranks = $this->RecordModel->field('wxid,score,max(score)')->group('wxid')->limit(50)->orderRaw('score desc')->select();
+		for ($i=0; $i < count($ranks); $i++) 
 		{ 
-			$return_rank[$i]['wxid']=$records[$i]->wxid;
-			$return_rank[$i]['score']=$records[$i]->score;
+			$return_rank[$i]['wxid']=$ranks[$i]->wxid;
+			$return_rank[$i]['score']=$ranks[$i]->score;
+			$return_rank[$i]['url']=$ranks[$i]->url;
+			$return_rank[$i]['nickname']=$ranks[$i]->nickname;
 			//var_dump($records[$i]->score.'----'.$records[$i]->wxid);
 		}
 		return json($return_rank);
 		
 	}
 
+	function saveinfo()
+	{
+		if(!empty(Request::post('nickname')) && !empty(Request::post('iconurl')) && !empty(Request::post('openid')))
+		{
+			$arecord= Record::where('wxid',Request::post('openid'))->order('score','desc')->limit(1)->find();
+			$newimage= new Image;
+			if(!empty($arecord))
+			{
+				if($arecord['score']!=-1)
+				{
+					$newimage->score=$arecord['score'];
+					$newimage->wxid=Request::post('openid');
+					$newimage->nickname=Request::post('nickname');
+					$newimage->url=Request::post('iconurl');
+					$newimage->save();
+					return json(['imageurl' => $newimage->id]);
+				}
+			}
+		}
+		return json(['imageurl' => "error"]);
+	}
+
     function index()
     {
         return 1;
+    }
+
+     public function get_authorize_url($redirect_uri = 'http://kvczys.natappfree.cc/BiYe2/public/users/getopenid', $state = '')
+    {
+        $redirect_uri = urlencode($redirect_uri);
+        return "https://open.weixin.qq.com/connect/oauth2/authorize?appid={$this->app_id}&redirect_uri={$redirect_uri}&response_type=code&scope=snsapi_userinfo&state={$state}#wechat_redirect";
+    }
+    /**
+     * 获取微信openid
+     */
+    public function getOpenid2($turl)
+    {
+        if (!isset($_GET['code'])) {
+            //触发微信返回code码
+            $url = $this->get_authorize_url($turl, $this->state);
+            Header("Location: $url");
+            exit();
+        } else {
+            //获取code码，以获取openid
+            $code = $_GET['code'];
+            $access_info = $this->get_access_token($code);
+            return $access_info;
+        }
+    }
+    /**
+     * 获取授权token网页授权
+     *
+     * @param string $code 通过get_authorize_url获取到的code
+     */
+    public function get_access_token($code = '')
+    {
+        $appid = $this->app_id;
+        $appsecret = $this->app_secret;
+        $token_url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" . $appid . "&secret=" . $appsecret . "&code=" . $code . "&grant_type=authorization_code";
+        //echo $token_url;
+        $token_data = $this->http($token_url);
+        // var_dump( $token_data);
+        if ($token_data[0] == 200) {
+            $ar = json_decode($token_data[1], TRUE);
+            return $ar;
+        }
+        return $token_data[1];
+    }
+    public function http($url, $method = '', $postfields = null, $headers = array(), $debug = false)
+    {
+        $ci = curl_init();
+        /* Curl settings */
+        curl_setopt($ci, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+        curl_setopt($ci, CURLOPT_CONNECTTIMEOUT, 30);
+        curl_setopt($ci, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ci, CURLOPT_RETURNTRANSFER, true);
+        switch ($method) {
+            case 'POST':
+                curl_setopt($ci, CURLOPT_POST, true);
+                if (!empty($postfields)) {
+                    curl_setopt($ci, CURLOPT_POSTFIELDS, $postfields);
+                    $this->postdata = $postfields;
+                }
+                break;
+        }
+        curl_setopt($ci, CURLOPT_URL, $url);
+        curl_setopt($ci, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ci, CURLINFO_HEADER_OUT, true);
+        $response = curl_exec($ci);
+        $http_code = curl_getinfo($ci, CURLINFO_HTTP_CODE);
+        if ($debug) {
+            echo "=====post data======\r\n";
+            var_dump($postfields);
+            echo '=====info=====' . "\r\n";
+            print_r(curl_getinfo($ci));
+            echo '=====$response=====' . "\r\n";
+            print_r($response);
+        }
+        curl_close($ci);
+        return array($http_code, $response);
     }
 }
 ?>

@@ -17,8 +17,13 @@ nickname     text，昵称
 score        text，分数
 url          text，头像url
 */
+/*
+wxid      text，微信id
+*/
+
 class Image extends Model
 {
+
 }
 
 ?>

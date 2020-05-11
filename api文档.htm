@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>star_项目接口文档</title>
+    <!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <meta name="keywords" content="接口文档,ApiPost">
+    <meta name="description" content="本文档由可直接生成文档的API调试、管理工具ApiPost生成">
+    <meta name="author" content="https://www.apipost.cn/">
+    <link rel="stylesheet" href="https://docs.apipost.cn/statics/css/editor-preview.css">
+    <link rel="stylesheet" href="https://docs.apipost.cn/statics/highlight/github.min.css">
+    <link rel="stylesheet" type="text/css" href="https://docs.apipost.cn/statics/css/style.css?v=20200506" />
+    <link rel="stylesheet" type="text/css" href="https://img.cdn.apipost.cn/statics/build-in/font-awesome/css/font-awesome.min.css" />
+    <link rel="shortcut icon" href="https://docs.apipost.cn/statics/images/favicon.ico" />
+</head>
+<body>
+
+<!--顶部导航-->
+<div class="page-title-fixed">
+    <div class="container">
+        <h1 class="logo">
+            <a href="https://docs.apipost.cn/view/9b80e758f085c9ae">
+                <span class="logo-name">star</span>
+            </a>
+        </h1>
+        <ul class="page-menus">
+            <li>
+                <a href="https://docs.apipost.cn/view/9b80e758f085c9ae" class="active">使用文档</a>
+            </li>
+            <li>
+                <a href="javascript:;">导出离线</a>
+                <ul class="page-menus-btns">
+                    <li><a target="_blank" href="https://docs.apipost.cn/html/9b80e758f085c9ae" class="page-export-btn" data-target="html">导出HTML</a></li>
+                    <li><a target="_blank" href="https://docs.apipost.cn/markdown/9b80e758f085c9ae" class="page-export-btn" data-target="markdown">导出MarkDown</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<!--内容-->
+<div class="wrapper">
+    <div class="container">
+        <div class="sidebar-wrapper fixed">
+            <div class="sidebar apt-left-menu">
+                <script type="text" id="template-apt-left-menu-tpl">
+                {{if menu && menu.length > 0}}
+                <ul class="menu-group">
+                    {{each menu item i}}
+                    <li class="menu-item collapse">
+                        {{if item.target_type == 'folder'}}
+                        <a class="a-folder-btn sub-title"  data-{{item.target_type}}_id="{{item.target_id}}" href="javascript:;"><i class="fa fa-folder-o" aria-hidden="true"></i> {{item.name}}</a>
+                        {{if item.menu.length > 0}}
+                        <ul class="menu-group">
+                            {{each item.menu item2 i2}}
+                            <li class="menu-item collapse">
+                                {{if item2.target_type == 'folder'}}
+                                <a class="a-folder-btn sub-title"  data-{{item2.target_type}}_id="{{item2.target_id}}" href="javascript:;"><i class="fa fa-folder-o" aria-hidden="true"></i> {{item2.name}}</a>
+                                {{include 'template-apt-left-menu-tpl' item2}}
+                                {{else}}
+                                <a class="a-target-btn sub-title {{item2.mark}}"  data-target_id="{{item2.target_id}}" href="javascript:;">{{item2.name}}</a>
+                                {{/if}}
+                            </li>
+                            {{/each}}
+                        </ul>
+                        {{/if}}
+                        {{else}}
+                        <a class="a-target-btn sub-title {{item.mark}}"  data-target_id="{{item.target_id}}" href="javascript:;">{{item.name}}</a>
+                        {{/if}}
+                    </li>
+                    {{/each}}
+                </ul>
+                {{/if}}
+                </script>
+            </div>
+        </div>
+
+        <div class="main-container">
+
+            <div class="breadcrumb">
+
+                <div class="breadcrumb-anchor">
+
+                    <div class="anchor-toc">
+                        <div class="dropdown-toc">
+                            <div class="dropdown-trigger">
+                                <span class="toc-current">本页导航</span>
+                                <span class="icon-down"></span>
+                            </div>
+                            <div class="dropdown-body">
+                                <ul>
+                                    <li>
+                                        <a href="javascript:;">基本信息</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">请求参数</a>
+                                    </li>
+                                    <li class="toc-item-2">
+                                        <a href="javascript:;">Query参数</a>
+                                    </li>
+                                    <li class="toc-item-2">
+                                        <a href="javascript:;">Header参数</a>
+                                    </li>
+                                    <li class="toc-item-2">
+                                        <a href="javascript:;">Body参数</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">响应示例</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="markdown apt-target">
+                <script type="text" id="template-apt-target-tpl">
+                <h2>
+                    <em class="{{target.mark}}">[
+                        {{if target.mark == 'modifying'}}
+                        待修改
+                        {{else if target.mark == 'complated'}}
+                        已完成
+                        {{else}}
+                        开发中
+                        {{/if}}]
+                    </em>
+                    {{target.name}}<span class="metadata">更新时间：{{target.update_dtime}}</span>
+                </h2>
+                {{if target.request.description}}
+                <div class="editor-preview">
+                {{@target.request.description}}
+                </div>
+                {{/if}}
+                {{if target.target_type == 'api'}}
+                <h3 class="title"><a href="#mao1" class="maodian" id="mao1"></a> 基本信息</h3>
+                <ul>
+                    <li>
+                        <strong>接口状态：</strong> <span class="{{target.mark}}">
+                        {{if target.mark == 'modifying'}}
+                        待修改
+                        {{else if target.mark == 'complated'}}
+                        已完成
+                        {{else}}
+                        开发中
+                        {{/if}}
+                        </span>
+                    </li>
+                    <li>
+                        <strong>接口URL：</strong> <code class="span">{{target.request.url}}</code>
+                    </li>
+                    <li>
+                        <strong>请求方式：</strong> <code class="span">{{target.method}}</code>
+                    </li>
+                    {{if target.method != 'GET'}}
+                    <li>
+                        <strong>Content-Type：</strong> <code class="span">{{target.request.body.mode_text}}</code>
+                    </li>
+                    {{/if}}
+                </ul>
+                {{if target.request}}
+                <h3 class="title"><a  href="#mao2" class="maodian" id="mao2"></a> 请求参数</h3>
+                <p>接口请求参数见下表：
+                {{if (target.request.query && target.request.query.parameter.length > 0) || global_paras.query.length > 0}}
+                <h4><a  href="#mao3" class="maodian" id="mao3"></a> Query参数说明</h4>
+                <div>
+                    <table>
+
+                        <tbody>
+                        <tr>
+                            <th>
+                                <div><strong>参数名</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>示例值</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>是否必填</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>参数描述</strong></div>
+                            </th>
+                        </tr>
+                        {{if global_paras.query}}
+                        {{each global_paras.query query i}}
+                        {{if query.key != ''}}
+                        <tr class="apt-global_paras">
+                            <td>
+                                <div>[全局参数] {{query.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{query.value}}</div>
+                            </td>
+                            <td>
+                                <div>{{(query.not_null && query.not_null > 0) ?  '必填' : '选填'}}</div>
+                            </td>
+                            <td>
+                                <div>{{query.description}}</div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        {{/if}}
+
+                        {{each target.request.query.parameter query i}}
+                        {{if query.key != ''}}
+                        <tr>
+                            <td>
+                                <div>{{query.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{query.value}}</div>
+                            </td>
+                            <td>
+                                <div>{{(query.not_null && query.not_null > 0) ?  '必填' : '选填'}}</div>
+                            </td>
+                            <td>
+                                <div>{{query.description}}</div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                {{/if}}
+                {{if target.request.resful && target.request.resful.parameter.length > 0}}
+                <h4><a  href="#mao12" class="maodian" id="mao12"></a> 路径参数</h4>
+                <div>
+                    <table>
+
+                        <tbody>
+                        <tr>
+                            <th>
+                                <div><strong>参数名</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>示例值</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>参数描述</strong></div>
+                            </th>
+                        </tr>
+                        {{each target.request.resful.parameter resful i}}
+                        {{if resful.key != ''}}
+                        <tr>
+                            <td>
+                                <div>{{resful.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{resful.value}}</div>
+                            </td>
+                            <td>
+                                <div>{{resful.description}}</div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                {{/if}}
+                {{if (target.request.header && target.request.header.parameter.length > 0) || global_paras.header.length > 0}}
+                <h4><a  href="#mao4" class="maodian" id="mao4"></a> Header参数说明</h4>
+                <div>
+                    <table>
+
+                        <tbody>
+                        <tr>
+                            <th>
+                                <div><strong>参数名</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>示例值</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>是否必填</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>参数描述</strong></div>
+                            </th>
+                        </tr>
+                        {{if global_paras.header}}
+                        {{each global_paras.header header i}}
+                        {{if header.key != ''}}
+                        <tr class="apt-global_paras">
+                            <td>
+                                <div>[全局参数] {{header.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{header.value}}</div>
+                            </td>
+                            <td>
+                                <div>{{(header.not_null && header.not_null > 0) ?  '必填' : '选填'}}</div>
+                            </td>
+                            <td>
+                                <div>{{header.description}}</div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        {{/if}}
+
+                        {{each target.request.header.parameter header i}}
+                        {{if header.key != ''}}
+                        <tr>
+                            <td>
+                                <div>{{header.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{header.value}}</div>
+                            </td>
+                            <td>
+                                <div>{{header.not_null && header.not_null > 0 ?  '必填' : '选填'}}</div>
+                            </td>
+                            <td>
+                                <div>{{header.description}}</div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                {{/if}}
+                {{if target.request.body}}
+                {{if target.request.body.mode == 'form-data' || target.request.body.mode == 'urlencoded'}}
+                {{if target.request.body.parameter.length > 0 || global_paras.body.length > 0}}
+                <h4><a  href="#mao5" class="maodian" id="mao5"></a> Body参数说明 ({{target.request.body.mode_text}})</h4>
+                <div>
+                    <table>
+
+                        <tbody>
+                        <tr>
+                            <th>
+                                <div><strong>参数名</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>示例值</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>是否必填</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>参数描述</strong></div>
+                            </th>
+                        </tr>
+                        {{if global_paras.body}}
+                        {{each global_paras.body body i}}
+                        {{if body.key != ''}}
+                        <tr class="apt-global_paras">
+                            <td>
+                                <div>[全局参数] {{body.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{body.value}}</div>
+                            </td>
+                            <td>
+                                <div>{{(body.not_null && body.not_null > 0) ?  '必填' : '选填'}}</div>
+                            </td>
+                            <td>
+                                <div>{{body.description}}</div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        {{/if}}
+
+                        {{each target.request.body.parameter body i}}
+                        {{if body.key != ''}}
+                        <tr>
+                            <td>
+                                <div>{{body.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{body.value}}</div>
+                            </td>
+                            <td>
+                                <div>{{body.not_null && body.not_null > 0 ? '必填' : '选填'}}</div>
+                            </td>
+                            <td>
+                                <div>{{body.description}}</div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                {{/if}}
+                {{else}}
+                {{if target.request.body.raw}}
+                <h4><a  href="#mao5" class="maodian" id="mao5"></a> Body参数 ({{target.request.body.mode_text}})</h4>
+                <div class="editor-preview">
+                <pre><code>{{@target.request.body.raw}}</code></pre>
+                </div>
+                {{if target.request.body && target.request.body.raw_para && target.request.body.raw_para.length > 0}}
+                <h4><a  href="#mao10" class="maodian" id="mao10"></a> 参数说明</h4>
+                <div>
+                    <table>
+
+                        <tbody>
+                        <tr>
+                            <th>
+                                <div><strong>参数名</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>示例值</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>是否必填</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>参数描述</strong></div>
+                            </th>
+                        </tr>
+                        {{each target.request.body.raw_para body i}}
+                        {{if body.key != ''}}
+                        <tr>
+                            <td>
+                                <div>{{body.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{body.value}}</div>
+                            </td>
+                            <td>
+                                <div>{{body.not_null && body.not_null > 0 ? '必填' : '选填'}}</div>
+                            </td>
+                            <td>
+                                <div>{{body.description}}</div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                {{/if}}
+                {{/if}}
+                {{/if}}
+                {{/if}}
+                {{/if}}
+                {{if target.response}}
+                <h3 class="title"><a  href="#mao6" class="maodian" id="mao6"></a> 响应示例</h3>
+                {{if target.response && target.response.success && target.response.success.raw}}
+                <h4><a  href="#mao7" class="maodian" id="mao7"></a> 正确响应示例</h4>
+                <div class="editor-preview">
+                <pre><code>{{@target.response.success.raw}}</code></pre>
+                </div>
+                {{if target.response.success.parameter.length > 0}}
+                <h4><a  href="#mao8" class="maodian" id="mao8"></a> 参数说明</h4>
+                <div>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th>
+                                <div><strong>参数名</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>示例值</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>参数描述</strong></div>
+                            </th>
+                        </tr>
+                        {{each target.response.success.parameter item i}}
+                        {{if item.key != ''}}
+                        <tr>
+                            <td>
+                                <div>{{item.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{item.value}}</div>
+                            </td>
+                            <td>
+                                <div>{{item.description}}</div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                {{/if}}
+                {{/if}}
+                {{if target.response && target.response.error && target.response.error.raw}}
+                <h4><a  href="#mao8" class="maodian" id="mao8"></a> 错误响应示例</h4>
+                <div class="editor-preview">
+                <pre><code>{{@target.response.error.raw}}</code></pre>
+                </div>
+                {{if target.response.error.parameter.length > 0}}
+                <h4><a  href="#mao9" class="maodian" id="mao9"></a> 参数说明</h4>
+                <div>
+                    <table>
+
+                        <tbody>
+                        <tr>
+                            <th>
+                                <div><strong>参数名</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>示例值</strong></div>
+                            </th>
+                            <th>
+                                <div><strong>参数描述</strong></div>
+                            </th>
+                        </tr>
+                        {{each target.response.error.parameter item i}}
+                        {{if item.key != ''}}
+                        <tr>
+                            <td>
+                                <div>{{item.key}}</div>
+                            </td>
+                            <td>
+                                <div>{{item.value}}</div>
+                            </td>
+                            <td>
+                                <div>{{item.description}}</div>
+                            </td>
+                        </tr>
+                        {{/if}}
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+                {{/if}}
+                {{/if}}
+                {{/if}}
+                {{/if}}
+                <footer>本文档由<a href="https://docs.apipost.cn/" target="_blank">APIPOST接口调试与管理工具</a>生成</footer>
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <!--图片弹窗-->
+    <div class="imgtc">
+        <img src=""/>
+    </div>
+</div>
+<script src="https://img.cdn.apipost.cn/statics/build-in/jquery/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://docs.apipost.cn/statics/marked/marked.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://docs.apipost.cn/statics/highlight/highlight.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://img.cdn.apipost.cn/cdn/art-template@4.13.2/template-web.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://docs.apipost.cn/statics/apt.min-1.0.0.js?v=0423" type="text/javascript" charset="utf-8"></script>
+<script src="https://img.cdn.apipost.cn/statics/libs/crypto-js/crypto-js.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    $(function() {
+                                let _menu = [{"project_id":"48571","parent_id":"2104470","target_id":"337442","name":"\u63d0\u4ea4","method":"POST","mark":"developing","target_type":"api","menu":[]},{"project_id":"48571","parent_id":"2104470","target_id":"337449","name":"\u83b7\u53d6\u95ee\u9898","method":"POST","mark":"developing","target_type":"api","menu":[]},{"project_id":"48571","parent_id":"2104470","target_id":"337451","name":"\u83b7\u53d6\u7528\u6237\u4fe1\u606f","method":"POST","mark":"developing","target_type":"api","menu":[]},{"project_id":"48571","parent_id":"2104470","target_id":"2104453","name":"\u83b7\u53d6\u6392\u884c\u699c","method":"GET","mark":"developing","target_type":"api","menu":[]},{"project_id":"48571","parent_id":"2104470","target_id":"346297","name":"\u5fae\u4fe1check","method":"GET","mark":"developing","target_type":"api","menu":[]},{"project_id":"48571","parent_id":"2104470","target_id":"362928","name":"\u83b7\u53d6\u7528\u6237\u5fae\u4fe1\u4e2a\u4eba\u4fe1\u606f","method":"GET","mark":"developing","target_type":"api","menu":[]}];
+        let _l844092960 = {"337442":{"project_id":"48571","parent_id":"2104470","target_id":"337442","name":"\u63d0\u4ea4","method":"POST","mark":"developing","target_type":"api","update_day":"1589040000","update_dtime":"2020-05-10 19:28:29","sort":"0","request":{"target_id":337442,"auth":{"type":"noauth","kv":{"key":"","value":""},"bearer":{"key":""},"basic":{"username":"","password":""}},"body":{"mode":"form-data","parameter":[{"is_checked":1,"type":"Text","key":"openid","value":"666","not_null":1,"description":"\u5fae\u4fe1\u7684openid\uff0c\u7528\u4e8e\u6807\u8bc6\u7528\u6237"},{"is_checked":1,"type":"Text","key":"examid","value":"21","not_null":1,"description":"\u6bcf\u4e00\u6b21\u8003\u8bd5\u7684id"},{"is_checked":1,"type":"Text","key":"correct[0]","value":"1","not_null":1,"description":"\u7b54\u6848\u6570\u7ec4\uff0cA-D\u5bf9\u5e941-4"},{"is_checked":1,"type":"Text","key":"correct[1]","value":"3","not_null":1,"description":"\u7b54\u6848\u6570\u7ec4\uff0cA-D\u5bf9\u5e941-4"},{"is_checked":1,"type":"Text","key":"correct[2]","value":"2","not_null":1,"description":""},{"is_checked":1,"type":"Text","key":"correct[3]","value":"3","not_null":1,"description":""},{"is_checked":1,"type":"Text","key":"correct[4]","value":"2","not_null":1,"description":""},{"is_checked":1,"type":"Text","key":"correct[5]","value":"4","not_null":1,"description":""},{"is_checked":1,"type":"Text","key":"correct[6]","value":"3","not_null":1,"description":""},{"is_checked":1,"type":"Text","key":"correct[7]","value":"2","not_null":1,"description":""},{"is_checked":1,"type":"Text","key":"correct[8]","value":"2","not_null":1,"description":""},{"is_checked":1,"type":"Text","key":"correct[9]","value":"2","not_null":1,"description":""}],"raw":"","raw_para":[]},"description":"","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"url":"http:\/\/\u661f\u8fb0\u5927\u6d77.\u7f51\u5740\/users\/submit","resful":{"parameter":[]}},"response":{"success":{"raw":"{\r\n    \"try\": 2\r\n}","parameter":[{"key":"try","description":"\u7528\u6237\u7b54\u9898\u6b21\u6570\uff0c\u6700\u591a2\u6b21\uff0c\u5927\u4e8e\u4e24\u6b21\u65f6\u8fd4\u56de3\uff0c\u53d1\u751f\u9519\u8bef\u65f6\u8fd4\u56de-1"}]},"error":{"raw":"try=-1","parameter":[{"is_checked":1,"type":"Text","key":"try","value":"","description":"\u7528\u6237\u7b54\u9898\u6b21\u6570\uff0c\u6700\u591a2\u6b21\uff0c\u5927\u4e8e\u4e24\u6b21\u65f6\u8fd4\u56de3\uff0c\u53d1\u751f\u9519\u8bef\u65f6\u8fd4\u56de-1"}]}}},"337449":{"project_id":"48571","parent_id":"2104470","target_id":"337449","name":"\u83b7\u53d6\u95ee\u9898","method":"POST","mark":"developing","target_type":"api","update_day":"1589040000","update_dtime":"2020-05-10 19:28:22","sort":"1","request":{"target_id":337449,"auth":{"type":"noauth","kv":{"key":"","value":""},"bearer":{"key":""},"basic":{"username":"","password":""}},"body":{"mode":"form-data","parameter":[{"is_checked":1,"type":"Text","key":"openid","value":"666","not_null":1,"description":"\u5fae\u4fe1\u7684openid\uff0c\u7528\u4e8e\u6807\u8bc6\u7528\u6237"}],"raw":"","raw_para":[]},"description":"","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"url":"http:\/\/\u661f\u8fb0\u5927\u6d77.\u7f51\u5740\/users\/getproblem","resful":{"parameter":[]}},"response":{"success":{"raw":"{\n\t\"examid\": \"7\",\n\t\"data\": [\n\t\t{\n\t\t\t\"id\": 21,\n\t\t\t\"question\": \"\u6e05\u6c34\u6cb3\u6821\u533a\u4e3b\u697c\u4e00\u5171\u6709\u51e0\u5c42\",\n\t\t\t\"options\": \"5,6,7,8\",\n\t\t\t\"answer\": \"8\",\n\t\t\t\"type\": \"\u57fa\u7840\u77e5\u8bc6\",\n\t\t\t\"show_time\": 0,\n\t\t\t\"pass_time\": 0\n\t\t},\n\t\t{\n\t\t\t\"id\": 11,\n\t\t\t\"question\": \"\u6211\u7535\u672c\u79d1\u4e13\u4e1a\u5171\u6709\u591a\u5c11\u4e2a\",\n\t\t\t\"options\": \"63,61,56,51\",\n\t\t\t\"answer\": \"63\",\n\t\t\t\"type\": \"\u57fa\u7840\u77e5\u8bc6\",\n\t\t\t\"show_time\": 0,\n\t\t\t\"pass_time\": 0\n\t\t},\n\t\t{\n\t\t\t\"id\": 37,\n\t\t\t\"question\": \"\u6e05\u6c34\u6cb3\u6821\u533a\u54ea\u4e2a\u98df\u5802\u7684\u7537\u751f\u6700\u591a\",\n\t\t\t\"options\": \"\u94f6\u6866\u9910\u5385,\u6843\u56ed\u9910\u5385,\u5bb6\u56ed\u9910\u5385,\u671d\u9633\u9910\u5385\",\n\t\t\t\"answer\": \"\u671d\u9633\u9910\u5385\",\n\t\t\t\"type\": \"\u57fa\u7840\u77e5\u8bc6\",\n\t\t\t\"show_time\": 0,\n\t\t\t\"pass_time\": 0\n\t\t},\n\t\t{\n\t\t\t\"id\": 10,\n\t\t\t\"question\": \"\u6211\u7535\u6709\u51e0\u4e2a\u56fd\u5bb6\u7ea7\u91cd\u70b9\u5b9e\u9a8c\u5ba4\",\n\t\t\t\"options\": \"2,3,4,5\",\n\t\t\t\"answer\": \"4\",\n\t\t\t\"type\": \"\u57fa\u7840\u77e5\u8bc6\",\n\t\t\t\"show_time\": 0,\n\t\t\t\"pass_time\": 0\n\t\t},\n\t\t{\n\t\t\t\"id\": 50,\n\t\t\t\"question\": \"\u201c\u660e\u660e\u53ef\u4ee5\u9760\u989c\u503c\uff0c\u5374\u504f\u8981\u9760\u5b9e\u529b\u3002\u201c\u5979\u662f\u6211\u7535\u6700\u5e74\u8f7b\u7684\u526f\u9662\u957f\uff0c\u5979\u4e8e_____\u5e74\u6765\u6211\u7535\u5de5\u4f5c\",\n\t\t\t\"options\": \"2014,2015,2016,2017\",\n\t\t\t\"answer\": \"2015\",\n\t\t\t\"type\": \"\u540d\u6559\u5e08\",\n\t\t\t\"show_time\": 0,\n\t\t\t\"pass_time\": 0\n\t\t},\n\t\t{\n\t\t\t\"id\": 55,\n\t\t\t\"question\": \"\u4e0b\u5217\u9009\u9879\u4e2d\uff0c\u5728\u5927\u4e00\u5fc5\u4fee\u7684\u4e24\u95e8\u8bfe\u662f\",\n\t\t\t\"options\": \"\u6bdb\u6982\u4e0e\u6982\u7387\u8bba,\u5fae\u79ef\u5206\u548c\u4fe1\u53f7\u4e0e\u7cfb\u7edf,\u5927\u5b66\u7269\u7406\u548c\u9a6c\u539f,\u8fd1\u4ee3\u53f2\u548c\u601d\u4fee\",\n\t\t\t\"answer\": \"\u8fd1\u4ee3\u53f2\u548c\u601d\u4fee\",\n\t\t\t\"type\": \"\u540d\u8bfe\u7a0b\",\n\t\t\t\"show_time\": 1,\n\t\t\t\"pass_time\": 1\n\t\t},\n\t\t{\n\t\t\t\"id\": 62,\n\t\t\t\"question\": \"\u5218\u82e5\u82f1\u6765\u8fc7\u6211\u7535_____\u6b21\",\n\t\t\t\"options\": \"1,2,3,4\",\n\t\t\t\"answer\": \"3\",\n\t\t\t\"type\": \"\u540d\u8bb2\u5ea7\",\n\t\t\t\"show_time\": 0,\n\t\t\t\"pass_time\": 0\n\t\t},\n\t\t{\n\t\t\t\"id\": 84,\n\t\t\t\"question\": \"2019\u5e74\u6210\u90fd\u7248\u5feb\u95ea\u300a\u6211\u548c\u6211\u7684\u7956\u56fd\u300b\uff0c\u6211\u7535\u5171\u6709\u591a\u5c11\u5b66\u5b50\u53c2\u52a0\",\n\t\t\t\"options\": \"40\u4eba,50\u4eba,60\u4eba,70\u4eba\",\n\t\t\t\"answer\": \"70\u4eba\",\n\t\t\t\"type\": \"\u5927\u4e8b\u8bb0\",\n\t\t\t\"show_time\": 1,\n\t\t\t\"pass_time\": 0\n\t\t},\n\t\t{\n\t\t\t\"id\": 83,\n\t\t\t\"question\": \"\u6211\u7535\u57282014-2018\u5e74\u4e2d\u56fd\u9ad8\u6821\u521b\u65b0\u4eba\u624d\u57f9\u517b\u66a8\u5b66\u79d1\u7ade\u8d5b\u8bc4\u4f30\u4e2d\u6392\u540d\u7b2c\u51e0\",\n\t\t\t\"options\": \"1,2,3,4\",\n\t\t\t\"answer\": \"4\",\n\t\t\t\"type\": \"\u5927\u4e8b\u8bb0\",\n\t\t\t\"show_time\": 1,\n\t\t\t\"pass_time\": 0\n\t\t},\n\t\t{\n\t\t\t\"id\": 64,\n\t\t\t\"question\": \"\u6211\u7535\u6e05\u6c34\u6cb3\u6821\u533a\u5e7c\u513f\u56ed\u5efa\u8bbe\u4e8e\u51e0\u53f7\u542f\u52a8\",\n\t\t\t\"options\": \"5.1,5.11,6.1,6.11\",\n\t\t\t\"answer\": \"6.1\",\n\t\t\t\"type\": \"\u5927\u4e8b\u8bb0\",\n\t\t\t\"show_time\": 0,\n\t\t\t\"pass_time\": 0\n\t\t}\n\t]\n}","parameter":[{"key":"examid","description":"\u6bcf\u4e00\u6b21\u8003\u8bd5\u7684id"},{"key":"data","description":"\u8fd4\u56de\u4e00\u4e2a\u6570\u7ec4"},{"key":"data.id","description":"int\uff0c\u95ee\u9898\u7684id"},{"key":"data.question","description":" text\uff0c\u95ee\u9898\u7684\u6807\u9898"},{"key":"data.options","description":"text,\u95ee\u9898\u7684\u9009\u9879"},{"key":"data.answer","description":"text\uff0c\u7b54\u6848"},{"key":"data.type","description":"text\uff0c\u5206\u7c7b"},{"key":"data.show_time","description":" int\uff0c\u672c\u9898\u88ab\u7b54\u6b21\u6570"},{"key":"data.pass_time","description":"int\uff0c\u7b54\u5bf9\u6570"}]},"error":{"raw":"\u9875\u9762\u9519\u8bef\uff0c\u8bf7\u7a0d\u540e\u518d\u8bd5","parameter":[]}}},"337451":{"project_id":"48571","parent_id":"2104470","target_id":"337451","name":"\u83b7\u53d6\u7528\u6237\u4fe1\u606f","method":"POST","mark":"developing","target_type":"api","update_day":"1589040000","update_dtime":"2020-05-10 19:28:17","sort":"2","request":{"target_id":337451,"auth":{"type":"noauth","kv":{"key":"","value":""},"bearer":{"key":""},"basic":{"username":"","password":""}},"body":{"mode":"form-data","parameter":[{"is_checked":1,"type":"Text","key":"openid","value":"666","not_null":1,"description":"\u5fae\u4fe1\u7684openid\uff0c\u7528\u4e8e\u6807\u8bc6\u7528\u6237"}],"raw":"","raw_para":[]},"description":"","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"url":"http:\/\/\u661f\u8fb0\u5927\u6d77.\u7f51\u5740\/users\/getuserinfo","resful":{"parameter":[]}},"response":{"success":{"raw":"{\r\n    \"try\": 1\r\n}","parameter":[{"key":"try","description":"\u7528\u6237\u7b54\u9898\u6b21\u6570\uff0c\u6700\u591a2\u6b21\uff0c\u5927\u4e8e\u4e24\u6b21\u65f6\u8fd4\u56de3\uff0c\u53d1\u751f\u9519\u8bef\u65f6\u8fd4\u56de-1"},{"key":"score","description":"\u8be5openid\u5bf9\u5e94\u7528\u6237\u5206\u6570"}]},"error":{"raw":"{\r\n    \"try\": -1\r\n}","parameter":[{"key":"try","description":"\u7528\u6237\u7b54\u9898\u6b21\u6570\uff0c\u6700\u591a2\u6b21\uff0c\u5927\u4e8e\u4e24\u6b21\u65f6\u8fd4\u56de3\uff0c\u53d1\u751f\u9519\u8bef\u65f6\u8fd4\u56de-1"},{"key":"score","description":"\u8be5openid\u5bf9\u5e94\u7528\u6237\u5206\u6570"}]}}},"2104453":{"project_id":"48571","parent_id":"2104470","target_id":"2104453","name":"\u83b7\u53d6\u6392\u884c\u699c","method":"GET","mark":"developing","target_type":"api","update_day":"1589040000","update_dtime":"2020-05-10 19:27:41","sort":"3","request":{"target_id":2104453,"auth":{"type":"noauth","kv":{"key":"","value":""},"bearer":{"key":""},"basic":{"username":"","password":""}},"body":{"mode":"form-data","parameter":[],"raw":"","raw_para":[]},"description":"","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"resful":{"parameter":[]},"url":"http:\/\/\u661f\u8fb0\u5927\u6d77.\u7f51\u5740\/users\/getrank"},"response":{"success":{"raw":"[\r\n\t{\r\n\t\t\"wxid\": \"666\",\r\n\t\t\"score\": 100\r\n\t},\r\n\t{\r\n\t\t\"wxid\": \"66\",\r\n\t\t\"score\": 50\r\n\t},\r\n\t{\r\n\t\t\"wxid\": \"6\",\r\n\t\t\"score\": 40\r\n\t},\r\n\t{\r\n\t\t\"wxid\": \"7\",\r\n\t\t\"score\": 40\r\n\t},\r\n\t{\r\n\t\t\"wxid\": \"1\",\r\n\t\t\"score\": 30\r\n\t},\r\n\t{\r\n\t\t\"wxid\": \"8\",\r\n\t\t\"score\": 30\r\n\t},\r\n\t{\r\n\t\t\"wxid\": \"2\",\r\n\t\t\"score\": 20\r\n\t},\r\n\t{\r\n\t\t\"wxid\": \"3\",\r\n\t\t\"score\": 20\r\n\t},\r\n\t{\r\n\t\t\"wxid\": \"4\",\r\n\t\t\"score\": 10\r\n\t}\r\n]","parameter":[]}}},"346297":{"project_id":"48571","parent_id":"2104470","target_id":"346297","name":"\u5fae\u4fe1check","method":"GET","mark":"developing","target_type":"api","update_day":"1589040000","update_dtime":"2020-05-10 19:28:00","sort":"4","request":{"target_id":346297,"auth":{"type":"noauth","kv":{"key":"","value":""},"bearer":{"key":""},"basic":{"username":"","password":""}},"body":{"mode":"form-data","parameter":[],"raw":"","raw_para":[]},"description":"\u5fae\u4fe1\u63a5\u5165\u68c0\u67e5\u63a5\u53e3","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"url":"http:\/\/\u661f\u8fb0\u5927\u6d77.\u7f51\u5740\/users\/checksignature","resful":{"parameter":[]}},"response":{"success":{"raw":"","parameter":[]},"error":{"raw":"","parameter":[]}}},"362928":{"project_id":"48571","parent_id":"2104470","target_id":"362928","name":"\u83b7\u53d6\u7528\u6237\u5fae\u4fe1\u4e2a\u4eba\u4fe1\u606f","method":"GET","mark":"developing","target_type":"api","update_day":"1589040000","update_dtime":"2020-05-10 19:28:06","sort":"5","request":{"target_id":362928,"auth":{"type":"noauth","kv":{"key":"","value":""},"bearer":{"key":""},"basic":{"username":"","password":""}},"body":{"mode":"form-data","parameter":[],"raw":"","raw_para":[]},"description":"","event":{"pre_script":"","test":""},"header":{"parameter":[]},"query":{"parameter":[]},"url":"http:\/\/\u661f\u8fb0\u5927\u6d77.\u7f51\u5740\/users\/getcode","resful":{"parameter":[]}},"response":{"success":{"raw":"\u7528\u6237\u5fae\u4fe1\u4fe1\u606f\uff0c\u6635\u79f0\u5934\u50cf\u6027\u522b\u57ce\u5e02\u7b49\uff0cjson\u683c\u5f0f","parameter":[]},"error":{"raw":"","parameter":[{"key":"","description":""}]}}}};
+        let _global_paras = null;
+        apt.init(_menu, _l844092960, _global_paras);
+    })
+</script>
+<!-- 百度统计 -->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?a046ce178828e393614822a297b8d296";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+<!-- 360统计 -->
+<script>
+    (function(){
+        var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?07ef9520f5511356899444a093d03ded":"https://jspassport.ssl.qhimg.com/11.0.1.js?07ef9520f5511356899444a093d03ded";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+    })();
+</script>
+<span style="display: none;"><script type="text/javascript" src="https://s23.cnzz.com/z_stat.php?id=1276797738&web_id=1276797738"></script></span>
+</body>
+</html>
