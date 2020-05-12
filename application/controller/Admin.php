@@ -88,34 +88,38 @@ class Admin extends \think\Controller
 			switch($_POST['answer'])
 			{
 				case 1:
-					$new_problem->answer=$_POST['option1'];
+					//$new_problem->answer=$_POST['option1'];
+					$new_problem->answer=1;
 					break;
 				case 2:
-					$new_problem->answer=$_POST['option2'];
+					//$new_problem->answer=$_POST['option2'];
+					$new_problem->answer=2;
 					break;
 				case 3:
-					$new_problem->answer=$_POST['option3'];
+					//$new_problem->answer=$_POST['option3'];
+					$new_problem->answer=3;
 					break;
 				case 4:
-					$new_problem->answer=$_POST['option4'];
+					//$new_problem->answer=$_POST['option4'];
+					$new_problem->answer=4;
 					break;
 			}
 			switch($_POST['kind'])
 			{
 				case 1:
-					$new_problem->type="基础知识";
+					$new_problem->type="第一幕";
 					break;
 				case 2:
-					$new_problem->type="名教师";
+					$new_problem->type="第二幕";
 					break;
 				case 3:
-					$new_problem->type="名课程";
+					$new_problem->type="第三幕";
 					break;
 				case 4:
-					$new_problem->type="名讲座";
+					$new_problem->type="第四幕";
 					break;
 				case 5:
-					$new_problem->type="大事记";
+					$new_problem->type="第五幕";
 					break;
 			}
 			$new_problem->show_time=0;
