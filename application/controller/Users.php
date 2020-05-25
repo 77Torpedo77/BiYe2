@@ -27,6 +27,7 @@ use app\model\Record;
 use app\model\User;
 use app\model\Image;
 use think\facade\Log;
+use lib\Ldap;
 
 class Users extends Controller
 {
@@ -408,6 +409,14 @@ class Users extends Controller
     function index()
     {
         return 1;
+    }
+
+    function test()
+    {
+    	$id=123;
+    	$pass=456;
+    	$a=new Ldap($id,$pass);
+    	$a->run();
     }
 
    
